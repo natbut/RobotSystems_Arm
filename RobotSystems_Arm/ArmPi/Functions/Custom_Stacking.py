@@ -129,9 +129,9 @@ class movement():
         
         self.unreachable = False
         self.coordinate = {
-                            'red':   (-15 + 0.5, 12 - 0.5, 1.5),
-                            'green': (-15 + 0.5, 6 - 0.5,  1.5),
-                            'blue':  (-15 + 0.5, 0 - 0.5,  1.5),
+                            'red':   (-15 + 0.5, 6 - 0.5, 1.5),
+                            'green': (-15 + 0.5, 6 - 0.5,  5),
+                            'blue':  (-15 + 0.5, 6 - 0.5,  9),
                             }
         
     def pickup_starting(self):
@@ -164,17 +164,18 @@ class movement():
                         self.unreachable = False
                         
                         time.sleep(result[2]/1000)
-
+                        
+                        # Block pickup
                         if not _isRunning: continue
                         servo2_angle = getAngle(world_X, world_Y, rotation_angle) 
                         Board.setBusServoPulse(1, servo1 - 280, 500) 
                         Board.setBusServoPulse(2, servo2_angle, 500)
                         time.sleep(0.5)
-                    
+                        
                         if not _isRunning: continue
                         AK.setPitchRangeMoving((world_X, world_Y, 1.5), -90, -90, 0, 1000)
                         time.sleep(1.5)
-
+                        
                         if not _isRunning: continue
                         Board.setBusServoPulse(1, servo1, 500) 
                         time.sleep(0.8)
@@ -183,7 +184,8 @@ class movement():
                         Board.setBusServoPulse(2, 500, 500)
                         AK.setPitchRangeMoving((world_X, world_Y, 12), -90, -90, 0, 1000)
                         time.sleep(1)
-
+                        
+                        # Color-dependent placement
                         if not _isRunning: continue
                         result = AK.setPitchRangeMoving((self.coordinate[detect_color][0], self.coordinate[detect_color][1], 12), -90, -90, 0)   
                         time.sleep(result[2]/1000)
@@ -200,7 +202,8 @@ class movement():
                         if not _isRunning: continue                  
                         AK.setPitchRangeMoving((self.coordinate[detect_color]), -90, -90, 0, 1000)
                         time.sleep(0.8)
-
+                        
+                        # Release block
                         if not _isRunning: continue
                         Board.setBusServoPulse(1, servo1 - 200, 500)
                         time.sleep(0.8)
@@ -434,5 +437,6 @@ if __name__ == '__main__':
         
     my_camera.camera_close()
     cv2.destroyAllWindows()
+
 
 
